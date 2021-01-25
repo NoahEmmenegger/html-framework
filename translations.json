@@ -1,3 +1,12 @@
 {
-    "test": "das ist ein test"
+    "test": {
+        "fr": "ceci est un test",
+        "de": "das ist ein test",
+        "en": "this is a test"
+    },
+    "zwei": {
+        "fr": "deux",
+        "de": "Zwei",
+        "en": "two"
+    }
 }

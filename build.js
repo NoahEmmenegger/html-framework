@@ -1,5 +1,6 @@
 const fs = require('fs');
 const config = require('./config.json')
+const translations = require('./translations.json')
 
 if(fs.existsSync('build')) {
     fs.rmdirSync('build', {recursive: true })
@@ -11,7 +12,7 @@ const files = fs.readdirSync('.')
 
 
 function translate(key, language) {
-    return key + ' ' + language
+    return translations[key][language]
 }
 
 
