@@ -8,5 +8,10 @@
         "fr": "deux",
         "de": "Zwei",
         "en": "two"
+    },
+    "page_title": {
+        "fr": "titre de la page",
+        "de": "Seiten Titel",
+        "en": "Page Title"
     }
 }

@@ -4,5 +4,6 @@
         "fr",
         "en"
     ],
-    "defaultLanguage": "en"
+    "defaultLanguage": "en",
+    "domain": "file:///D:/html-framework/build"
 }

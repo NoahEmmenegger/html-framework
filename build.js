@@ -32,8 +32,14 @@ function getTranslatedContent(file, language) {
 
     // add hreflang
     let hreflangs = ''
-    config.languages.forEach(language => {
-        hreflangs += `\n    <link rel="alternate" hreflang="${language}" href="../${language}/${file}">`
+    config.languages.forEach(lang => {
+        if(lang !== language) {
+            if(lang == config.defaultLanguage) {
+                hreflangs += `\n    <link rel="alternate" hreflang="${lang}" href="${config.domain}/${file}">`
+            }else {
+                hreflangs += `\n    <link rel="alternate" hreflang="${lang}" href="${config.domain}/${lang}/${file}">`
+            }
+        }
     })
     string = string.replace('<!--HrefLang-->', '<!--HrefLang-->' + hreflangs)
 
