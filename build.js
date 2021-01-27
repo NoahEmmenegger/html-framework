@@ -20,11 +20,22 @@ function getTranslatedContent(file, language) {
     let content =  fs.readFileSync(file)
     let string = content.toString()
 
+    // translate
     let matches = string.match(/translate\((.*?)\)/g)
     matches.forEach(match => {
         let key = match.match(/\((.*?)\)/g).toString().slice(1, -1)
         string = string.replace(`translate(${key})`, translate(key, language))
     })
+
+    // add html lan
+    string = string.replace('<html>', `<html lang="${language}">`)
+
+    // add hreflang
+    let hreflangs = ''
+    config.languages.forEach(language => {
+        hreflangs += `\n    <link rel="alternate" hreflang="${language}" href="../${language}/${file}">`
+    })
+    string = string.replace('<!--HrefLang-->', '<!--HrefLang-->' + hreflangs)
 
     return string
 }
