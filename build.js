@@ -22,10 +22,12 @@ function getTranslatedContent(file, language) {
 
     // translate
     let matches = string.match(/translate\((.*?)\)/g)
-    matches.forEach(match => {
-        let key = match.match(/\((.*?)\)/g).toString().slice(1, -1)
-        string = string.replace(`translate(${key})`, translate(key, language))
-    })
+    if(matches !== null) {
+        matches.forEach(match => {
+            let key = match.match(/\((.*?)\)/g).toString().slice(1, -1)
+            string = string.replace(`translate(${key})`, translate(key, language))
+        })
+    }
 
     // add html lan
     string = string.replace('<html>', `<html lang="${language}">`)
