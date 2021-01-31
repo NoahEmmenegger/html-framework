@@ -89,4 +89,22 @@ config.languages.forEach((language) => {
     }
 })
 
+function copyDir(from, to) {
+    if(!fs.existsSync(`build/assets`)) {
+        fs.mkdirSync(`build/assets`)
+    }
+    everyFiles.filter(file => file.path.startsWith('./assets')).forEach(file => {
+        if(!fs.existsSync(`build/${file.path}`)) {
+            fs.mkdirSync(`build/${file.path}`)
+        }
+        fs.writeFileSync(`build/${file.path}/${file.name}`, fs.readFileSync(`${file.path}/${file.name}`))
+    })
+}
+
+
+if(fs.existsSync('./assets')) {
+    copyDir('./assets', './build/assets')
+}
+
+
 return
