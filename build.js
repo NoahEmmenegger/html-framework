@@ -106,5 +106,9 @@ if(fs.existsSync('./assets')) {
     copyDir('./assets', './build/assets')
 }
 
+fs.readdirSync('.').filter(file => !file.endsWith('.html') && !fs.lstatSync(file).isDirectory() && !file.startsWith('.') && file !== 'build.js' && file !== 'config.json' && file !== 'translations.json').forEach(file => {
+    fs.writeFileSync(`build/${file}`, fs.readFileSync(`./${file}`))
+})
+
 
 return
