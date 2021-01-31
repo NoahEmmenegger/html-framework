@@ -8,13 +8,28 @@ if(fs.existsSync('build')) {
 
 const buildFolder = fs.mkdirSync('build')
 
-const files = fs.readdirSync('.')
+const everyFiles = []
 
 
 function translate(key, language) {
     return translations[key][language]
 }
 
+function recursiveFileSearch(path) {
+    let files = fs.readdirSync(path, {withFileTypes: true})
+    files.forEach(file => {
+        if(file.isDirectory()){
+            if(!file.name.startsWith('.') && file.name !== 'build')
+            {
+                recursiveFileSearch(`${path}/${file.name}`)
+            }
+        } else {
+            if(!file.name.startsWith('.') && file.name !== 'build.js' && file.name !== 'config.json' && file.name !== 'translations.json') {
+                everyFiles.push({name: file.name, path: path})
+            }
+        }
+    })
+}
 
 function getTranslatedContent(file, language) {
     let content =  fs.readFileSync(file)
@@ -48,19 +63,27 @@ function getTranslatedContent(file, language) {
     return string
 }
 
+recursiveFileSearch('.')
+
 config.languages.forEach((language) => {
     if(language !== config.defaultLanguage) {
         fs.mkdirSync(`build/${language}`)
 
-        files.forEach((file) => {
-            if(file.endsWith('.html')) {
-                fs.writeFileSync(`build/${language}/${file}`, getTranslatedContent(file, language))
+        everyFiles.forEach((file) => {
+            if(file.name.endsWith('.html')) {
+                if(!fs.existsSync(`build/${language}/${file.path}`)) {
+                    fs.mkdirSync(`build/${language}/${file.path}`)
+                }
+                fs.writeFileSync(`build/${language}/${file.path}/${file.name}`, getTranslatedContent(`${file.path}/${file.name}`, language))
             }
         })
     } else {
-        files.forEach((file) => {
-            if(file.endsWith('.html')) {
-                fs.writeFileSync(`build/${file}`, getTranslatedContent(file, 'en'))
+        everyFiles.forEach((file) => {
+            if(file.name.endsWith('.html')) {
+                if(!fs.existsSync(`build/${file.path}`)) {
+                    fs.mkdirSync(`build/${file.path}`)
+                }
+                fs.writeFileSync(`build/${file.path}/${file.name}`, getTranslatedContent(`${file.path}/${file.name}`, 'en'))
             }
         })
     }
